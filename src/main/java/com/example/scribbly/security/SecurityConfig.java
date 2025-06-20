@@ -21,17 +21,19 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-        	.csrf().disable()
-        	.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/signup", "/login", "/css/**").permitAll()
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form
-        	.loginPage("/login") // 커스텀 로그인 페이지
-        	.defaultSuccessUrl("/", true) // 로그인 성공 시 이동 경로
-        	.permitAll()
-        )
-         .logout().permitAll();
+		.csrf().disable() // CSRF 비활성화 (테스트용)
+        .authorizeHttpRequests()
+            .requestMatchers("/", "/users/checkIdJson", "/scribbly", "/scribbly/login", "/scribbly/blog", 
+            		"/scribbly/signup", "/css/**", "/js/**", "/images/**").permitAll() // 비로그인 허용
+            .anyRequest().authenticated() // 그 외엔 로그인 필요
+        .and()
+        .formLogin()
+            .loginPage("/scribbly/login") // 커스텀 로그인 페이지
+            .permitAll()
+        .and()
+        .logout()
+            .logoutSuccessUrl("/scribbly")
+            .permitAll();
 
 		return http.build();
 	}

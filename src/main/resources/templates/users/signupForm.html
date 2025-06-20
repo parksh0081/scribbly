@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" >
+<title>회원가입</title>
+<script type="text/javascript">
+	function checkIdOK(){
+		const username = document.getElementById('username').value;
+		const idTag = document.getElementById("idTag");
+		
+		// 아이디가 비어있으면 중복검사하지 않음
+		if(username.trim()==""){
+			idTag.innerHTML = '<small style="color: gray;">*id는 닉네임으로 사용되며, 변경할 수 없습니다.</small>';
+			return false;
+		} else {	// id 비어있지 않으면
+			// 서버로 아이디 중복 여부 요청 POST 방식
+			fetch(`/users/checkIdJson`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',	// JSON 형식으로 요청
+				},
+				body: JSON.stringify({username: username})	// 바디에 JSON 형식으로 아이디 전달
+			})
+				.then(response => {
+					if (!response.ok){
+						throw new Error("네트워크 응답이 좋지 않습니다.");
+					}
+					return response.json();
+				})
+				.then(data => {
+					// 메시지 동적 생성
+					const idMessage = document.createElement("small");
+					// 기존 메시지 지우기
+					idTag.innerHTML = "";
+					if(!data.result) {
+						idMessage.textContent = "*사용 가능한 아이디입니다.";
+						idMessage.style.color = "blue";
+					} else {
+						idMessage.textContent = "*사용할 수 없는 아이디입니다.";
+						idMessage.style.color = "red";
+					}
+					
+					// 메시지 컨테이너에 추가
+					idTag.appendChild(idMessage);
+				})
+				.catch(err => {
+					alert(err.message);
+				});
+		}
+	}
+	
+</script>
+</head>
+<body>
+	<form th:action="@{/scribbly/signup}" method="post" enctype="multipart/form-data" th:object="${userDTO}">
+	    <label>ID: <input type="text" th:field="*{username}" oninput="checkIdOK()" id="username"/></label><br/>
+	    <div id="idTag" style="font-size: 0.8em; margin-top: 5px; color: gray;">
+	    	<small style="color: gray;">*id는 닉네임으로 사용되며, 변경할 수 없습니다.</small>
+	    	<!-- 이 부분을 동적 설정 -->
+	    </div>
+	    <label>Password: <input type="password" th:field="*{password}" /></label><br/>
+	    <label>Email: <input type="text" th:field="*{email}" /></label><br/>
+	    <label>Blog Title: <input type="text" th:field="*{blog_title}" /></label><br/>
+		<label>Profile Image: <input type="file" name="profile" /></label><br/>
+	    
+	    <button type="submit">Sign Up</button>
+	</form>
+</body>
+</html>
