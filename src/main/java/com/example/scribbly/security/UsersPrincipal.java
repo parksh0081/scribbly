@@ -36,6 +36,12 @@ public class UsersPrincipal implements UserDetails {
 		// 로그인 아이디 반환
 		return users.getUsername();
 	}
+
+	public Users getUsers() {
+		// 사용자 정보 반환
+	    return users;
+	}
+
 	
 	// 계정 만료 여부
     @Override

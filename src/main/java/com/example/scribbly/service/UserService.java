@@ -23,14 +23,14 @@ public class UserService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    public void testPasswordMatch() {
-        String raw = "aaa";
-        String hashed = "$2a$10$Xeg.b005QWJ.osRQ9Eh0CO31DPQjw37IN3ExSWgHtqvv2ZhZEmQ02";
-
-        boolean matched = passwordEncoder.matches(raw, hashed);
-        System.out.println("암호 비교 결과: " + matched);
-    }
+//    @PostConstruct
+//    public void testPasswordMatch() {
+//        String raw = "aaa";
+//        String hashed = "$2a$10$Xeg.b005QWJ.osRQ9Eh0CO31DPQjw37IN3ExSWgHtqvv2ZhZEmQ02";
+//
+//        boolean matched = passwordEncoder.matches(raw, hashed);
+//        System.out.println("암호 비교 결과: " + matched);
+//    }
     
     // 회원가입
     @Transactional

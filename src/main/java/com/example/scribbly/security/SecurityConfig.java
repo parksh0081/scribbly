@@ -3,6 +3,7 @@ package com.example.scribbly.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final CustomUserDetailsService customUserDetailsService;
+	private final LoginSuccessHandler loginSuccessHandler;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,7 +38,7 @@ public class SecurityConfig {
         .formLogin()
             .loginPage("/scribbly/login") // 커스텀 로그인 페이지
             .loginProcessingUrl("/scribbly/login") // 로그인 처리 URL (POST)
-            .defaultSuccessUrl("/scribbly/blog", false) // 로그인 성공 시
+            .successHandler(loginSuccessHandler)
             .failureHandler(failureHandler())
             .permitAll()
         .and()
@@ -61,12 +63,26 @@ public class SecurityConfig {
         return customUserDetailsService;
     }
     
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
+        auth.authenticationProvider(daoAuthenticationProvider()); // 핵심 등록
+        return auth.build();
+    }
     
     @Bean
     public AuthenticationFailureHandler failureHandler() {
         return (request, response, exception) -> {
-        	//System.out.println("로그인 실패 핸들러 호출됨");
-            //exception.printStackTrace(); // 콘솔에 에러 출력
+        	System.out.println("로그인 실패 핸들러 호출됨");
+            exception.printStackTrace(); // 콘솔에 에러 출력
             response.sendRedirect("/scribbly/login?error=true");
         };
     }
