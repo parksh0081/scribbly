@@ -13,13 +13,17 @@ import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@Entity
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
 public class Users {
 	
     @Id
@@ -51,4 +55,9 @@ public class Users {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login")
     private Date last_login;
+    
+    @Override
+    public String toString() {
+        return "Users{" + "user_id=" + user_id + ", username=" + username + "}";
+    }
 }

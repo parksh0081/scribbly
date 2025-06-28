@@ -61,6 +61,9 @@ public class UsersController {
 
             // 웹에서 접근 가능한 경로로 저장
             userDTO.setProfile_image("/users/" + newFileName);
+        } else {
+        	// 프로필 이미지가 비어있을 경우
+        	userDTO.setProfile_image("/users/defalutProfile.jpg");
         }
         
         //create_at
@@ -69,39 +72,16 @@ public class UsersController {
     	//회원가입
         userService.register(userDTO);
         
-        return "/users/signup";  
+        return "/users/signupForm";  
     }
     
-    // 로그인
-    @GetMapping("/scribbly/login")
-    public String loginForm() {
-    	return "/users/loginForm";
-    }
-    
-    @PostMapping("/scribbly/login")
-    public String login(HttpServletRequest request, Model model) {
-		boolean result = false;
-		HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-
-		Users user = userService.login(username, password);
-		if (user != null) { // 로그인 성공
-			session.setAttribute("username", username);
-			result = true;
-		}
-		model.addAttribute("result", result);
-	    model.addAttribute("user", user);
-    	
-    	return "/users/login";
-    }
-    
-    
-    @GetMapping("/scribbly")
-    public String logout(HttpSession session) {
-    	session.removeAttribute("username");
-    	session.removeAttribute("password");
-    	return "/main/scribbly";
+    // 로그인 폼 (Spring Security가 로그인 처리 담당)
+	@GetMapping("/scribbly/login")
+	public String loginForm(@RequestParam(value = "error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+        return "/users/loginForm";
     }
 
 }

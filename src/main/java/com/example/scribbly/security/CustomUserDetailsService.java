@@ -19,10 +19,12 @@ public class CustomUserDetailsService implements UserDetailsService{
 	// 로그인 시 username으로 사용자 정보 불러오는 함수
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		//System.out.println("loadUserByUsername 호출됨: " + username);
 		// username으로 DB에서 사용자 검색
 		Users user = usersRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+				
 		// Spring security에서 사용할 수 있게 UsersPrincipal로 포장
-		return new UsersPrincipal(user);
+		return new UsersPrincipal(user);  // UsersPrincipal은 UserDetails 구현체
 	}
 
 }

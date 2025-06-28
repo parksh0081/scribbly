@@ -1,15 +1,14 @@
 package com.example.scribbly.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.scribbly.entity.Users;
 import com.example.scribbly.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -18,10 +17,12 @@ public class MainController {
 	
 	private final UserService service;
 	
-	
-	
-	@PostMapping("/scribbly/blog")
-	public String loginBlog() {
+	@GetMapping("/scribbly/blog")
+	public String blog(Model model) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	    model.addAttribute("username", username);
 	    return "/main/blog";
 	}
+	
 }

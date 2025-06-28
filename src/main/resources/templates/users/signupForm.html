@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" >
+   <link rel="icon" href="/logo/scribbly.png" type="image/png">
+
 <title>회원가입</title>
 <script type="text/javascript">
 	function checkIdOK(){
@@ -48,11 +50,38 @@
 				});
 		}
 	}
-	
+
+	function checkSignup() {
+		var frm = document.frm; 
+		
+		if(!frm.username.value) {
+			alert("아이디를 입력하세요.");
+			frm.username.focus();
+			return false;
+		}
+		
+		if(!frm.password.value) {
+			alert("비밀번호를 입력하세요.");
+			frm.pwd.focus();
+			return false;
+		}
+		
+		if(!frm.email.value) {
+			alert("이메일을 입력하세요.");
+			frm.email1.focus();
+			return false;
+		}	
+		
+		if(!frm.blog_title.value){
+			frm.blog_title.value = frm.username.value + "님의 블로그";
+		}
+		
+		frm.submit();
+	}
 </script>
 </head>
 <body>
-	<form th:action="@{/scribbly/signup}" method="post" enctype="multipart/form-data" th:object="${userDTO}">
+	<form th:action="@{/scribbly/blog}" method="post" enctype="multipart/form-data" th:object="${userDTO}" name="frm">
 	    <label>ID: <input type="text" th:field="*{username}" oninput="checkIdOK()" id="username"/></label><br/>
 	    <div id="idTag" style="font-size: 0.8em; margin-top: 5px; color: gray;">
 	    	<small style="color: gray;">*id는 닉네임으로 사용되며, 변경할 수 없습니다.</small>
@@ -63,7 +92,7 @@
 	    <label>Blog Title: <input type="text" th:field="*{blog_title}" /></label><br/>
 		<label>Profile Image: <input type="file" name="profile" /></label><br/>
 	    
-	    <button type="submit">Sign Up</button>
+	    <button type="button" onclick="checkSignup()">Sign Up</button>
 	</form>
 </body>
 </html>

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+   <link rel="icon" href="/logo/scribbly.png" type="image/png">
 <meta charset="UTF-8">
 <title>Scribbly</title>
 </head>
 <body>
+<div th:replace="~{layouts/header}"></div>
 스크러블리 메인 화면
 
-회원가입
-로그인
+이웃 블로그 최신 글
+
+<a th:href="@{/scribbly/signup}">회원가입</a>
+<a th:href="@{/scribbly/login}">로그인</a>
+<a>내 블로그</a>
 
 </body>
 </html>

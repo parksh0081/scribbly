@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
+       <link rel="icon" href="/logo/scribbly.png" type="image/png">
     
 </head>
 <body>
@@ -9,6 +11,17 @@
 
 <!-- blog content -->
 <main class="container">
+
+<div sec:authorize="isAuthenticated()">
+    <!-- 로그인된 사용자에게만 보임 -->
+    <p th:text="'안녕하세요, ' + ${username} + '님!'"></p>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    <!-- 비로그인(익명 사용자)에게만 보임 -->
+    <a th:href="@{/scribbly/login}">로그인</a>
+</div>
+
 메뉴
 목록
 컨텐츠
