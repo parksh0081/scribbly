@@ -21,13 +21,13 @@ public class MainController {
 	private final UserService service;
 	
 	@GetMapping("/scribbly")
-	public String main(Model model) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    UsersPrincipal principal = (UsersPrincipal) auth.getPrincipal(); // 다운캐스팅
-	    Users user = principal.getUsers(); // Users 객체 꺼냄
-
-	    model.addAttribute("user", user); // 뷰에서 전체 정보 사용 가능
-	    return "/main/blog";
+	public String main(Model model, @AuthenticationPrincipal UsersPrincipal principal) {
+	    if (principal != null) {
+	        Users user = principal.getUsers();
+	        model.addAttribute("user", user);
+	    }
+	    // principal이 null이든 아니든 view는 보여줌
+	    return "/main/scribbly";
 	}
 	
 	@GetMapping("/scribbly/blog")

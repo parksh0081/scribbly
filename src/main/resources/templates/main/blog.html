@@ -16,6 +16,9 @@
     <!-- 로그인된 사용자에게만 보임 -->
     <p th:text="'안녕하세요, ' + ${user.username} + '님!'"></p>
     <p th:text="'블로그 제목: ' + ${user.blog_title}"></p>
+    <form th:action="@{/scribbly/logout}" method="post">
+	    <button type="submit">로그아웃</button>
+	</form>
 </div>
 
 <div sec:authorize="isAnonymous()">
