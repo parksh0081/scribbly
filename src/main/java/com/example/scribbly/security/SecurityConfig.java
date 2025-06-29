@@ -29,11 +29,13 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.csrf().disable() // CSRF 비활성화 (테스트용)
-        .authorizeHttpRequests()
-            .requestMatchers("/", "/error", "/error/**", // 하위 경로도 같이 추가
-            		"/logo/scribbly.png" ,"/users/checkIdJson", "/scribbly", "/scribbly/login", "/scribbly/blog", 
-            		"/scribbly/signup", "/css/**", "/js/**", "/images/**").permitAll() // 비로그인 허용
-            .anyRequest().authenticated() // 그 외엔 로그인 필요
+		.authorizeHttpRequests()
+		    .requestMatchers("/", "/error", "/error/**", 
+		        "/logo/scribbly.png" ,"/users/checkIdJson", "/scribbly", "/scribbly/login", 
+		        "/scribbly/blog", "/scribbly/signup", "/css/**", "/js/**", "/images/**").permitAll()
+		    .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자 권한만 접근
+		    .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // 사용자, 관리자 접근 가능
+		    .anyRequest().authenticated()
         .and()
         .formLogin()
             .loginPage("/scribbly/login") // 커스텀 로그인 페이지

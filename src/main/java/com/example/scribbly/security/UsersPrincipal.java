@@ -22,7 +22,7 @@ public class UsersPrincipal implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// 사용자 권한을 spring security 형식으로 리턴
-		return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + users.getRole()));
+	    return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + users.getRole().toUpperCase()));
 	}
 
 	@Override
