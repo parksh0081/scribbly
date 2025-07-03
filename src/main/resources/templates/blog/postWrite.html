@@ -1,0 +1,15 @@
+<!-- templates/blog/postWrite.html -->
+<div th:fragment="postWriteFragment">
+    <h2>글쓰기</h2>
+    <form th:action="@{/scribbly/posts}" method="post">
+        <input type="hidden" name="userId" th:value="${userId}" />
+
+        <label for="title">제목</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="content">내용</label><br>
+        <textarea id="content" name="content" rows="5" cols="50" required></textarea><br><br>
+
+        <button type="submit">작성</button>
+    </form>
+</div>

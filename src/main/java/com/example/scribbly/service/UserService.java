@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.scribbly.dao.UserDAO;
 import com.example.scribbly.dto.UserDTO;
+import com.example.scribbly.entity.Blog;
 import com.example.scribbly.entity.Users;
+import com.example.scribbly.repository.BlogRepository;
 import com.example.scribbly.repository.UsersRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserDAO dao;
     private final UsersRepository usersRepository;
+    private final BlogRepository blogRepository;
     private final PasswordEncoder passwordEncoder;
 
 //    @PostConstruct
@@ -35,6 +38,7 @@ public class UserService {
     // 회원가입
     @Transactional
     public void register(UserDTO userDTO) {
+    	// 1. 계정 생성
         Users user = Users.builder()
                 .user_id(generateUserId())  // UUID 또는 커스텀 ID 생성 메서드
                 .username(userDTO.getUsername())
@@ -47,6 +51,14 @@ public class UserService {
                 .build();
 
         usersRepository.save(user);
+        
+        // 2. 블로그 생성
+        Blog blog = Blog.builder()
+                .user(user)
+                .blogTitle(userDTO.getBlog_title())
+                .build();
+
+        blogRepository.save(blog);
     }
 
     private String generateUserId() {

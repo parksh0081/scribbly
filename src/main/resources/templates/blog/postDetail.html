@@ -1,0 +1,20 @@
+<!-- blog/postDetailFragment.html -->
+<div th:fragment="postDetailFragment">
+	<h2 th:text="${post.title}">글 제목</h2>
+	
+    <div style="margin-bottom: 1rem;">
+        <span th:text="'조회수: ' + ${post.viewCount}">조회수</span> |
+        <span th:text="'좋아요: ' + ${post.likeCount}">좋아요</span>
+    </div>
+
+    <div>
+        <p th:text="${post.content}">글 내용</p>
+    </div>
+
+    <!-- 나중에 수정/삭제 버튼도 여기에 -->
+    <div th:if="${#authentication.name == post.user.userId}">
+        <a th:href="">수정</a> |
+        <a th:href="" onclick="return confirm('정말 삭제할까요?')">삭제</a>
+    </div>
+</div>
+

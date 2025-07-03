@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${blogTitle}">블로그</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1 th:text="${blogTitle}">블로그 타이틀</h1>
+    <p th:text="'작성자: ' + ${user.nickname}">작성자</p>
+
+    <button id="showListBtn">글 목록</button>
+    <button id="showWriteBtn">글 쓰기</button>
+
+    <hr>
+    <h2>목록</h2>
+	<table border="1" cellpadding="5" cellspacing="0">
+	    <thead>
+	        <tr>
+	            <th>제목</th>
+	            <th>조회수</th>
+	            <th>좋아요</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="post : ${postPage.content}">
+	            <td th:text="${post.title}">제목</td>
+	            <td th:text="${post.viewCount}">0</td>
+	            <td th:text="${post.likeCount}">0</td>
+	        </tr>
+	    </tbody>
+	    <tfoot>
+	    	<tr colspan="3">
+			<!-- 페이징 -->
+			<div style="margin-top: 1rem;">
+			    <button th:if="${!postPage.first}"
+			            th:href="@{/scribbly/{userId}(userId=${user.user_id}, page=${postPage.number - 1})}">
+			        이전
+			    </button>
+			
+			    <span th:text="${postPage.number + 1} + ' / ' + ${postPage.totalPages}">1 / 1</span>
+			
+			    <button th:if="${!postPage.last}"
+			            th:href="@{/scribbly/{userId}(userId=${user.user_id}, page=${postPage.number + 1})}">
+			        다음
+			    </button>
+			</div>
+			</tr>
+	    </tfoot>
+	</table>
+
+
+		
+    <div id="contentArea">
+        <!-- 초기에는 글 목록을 기본으로 보여줌 -->
+        <div th:replace="blog/postList :: postListFragment"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const userId = /*[[${user.user_id}]]*/ 'default';
+
+            $('#showListBtn').click(function() {
+                $('#contentArea').load(`/scribbly/${userId}/postsFragment`);
+            });
+
+            $('#showWriteBtn').click(function() {
+                $('#contentArea').load(`/scribbly/${userId}/writeFragment`);
+            });
+        });
+    </script>
+</body>
+</html>
