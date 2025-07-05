@@ -24,7 +24,7 @@ public class BlogDTO {
         if (blog == null) return null;
         return BlogDTO.builder()
                 .blogId(blog.getBlogId())
-                .userId(blog.getUser().getUser_id())
+                .userId(blog.getUser().getUserId())
                 .blogTitle(blog.getBlogTitle())
                 .build();
     }

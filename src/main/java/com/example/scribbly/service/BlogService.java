@@ -1,6 +1,5 @@
 package com.example.scribbly.service;
 
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,8 @@ import lombok.RequiredArgsConstructor;
 public class BlogService {
 	private final BlogRepository blogRepository;
 	
-	public Optional<Blog> findByUserId(String userId) {
-        return blogRepository.findByUser_UserId(userId);
-    }
-
-    public Blog getBlogOrThrow(String userId) {
-        return blogRepository.findByUser_UserId(userId)
+    public Blog getBlogOrThrow(String username) {
+        return blogRepository.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("해당 유저의 블로그가 존재하지 않습니다."));
     }
 }

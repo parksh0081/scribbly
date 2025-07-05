@@ -28,7 +28,7 @@ public class Users {
 	
     @Id
     @Column(name = "user_id", length = 50)
-    private String user_id;
+    private String userId;
 
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String username;  // 닉네임
@@ -58,6 +58,6 @@ public class Users {
     
     @Override
     public String toString() {
-        return "Users{" + "user_id=" + user_id + ", username=" + username + "}";
+        return "Users{" + "user_id=" + userId + ", username=" + username + "}";
     }
 }

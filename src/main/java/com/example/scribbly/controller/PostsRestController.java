@@ -44,9 +44,9 @@ public class PostsRestController {
     }
 
     // 글 목록 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<PostDTO>> getPostsByUser(@PathVariable String userId) {
-        List<PostDTO> posts = postService.getAllPostsByUser(userId).stream()
+    @GetMapping("/{username}")
+    public ResponseEntity<List<PostDTO>> getPostsByUser(@PathVariable("username") String username) {
+        List<PostDTO> posts = postService.getAllPostsByUser(username).stream()
                 .map(PostDTO::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(posts);

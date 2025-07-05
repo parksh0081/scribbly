@@ -81,7 +81,7 @@
 </script>
 </head>
 <body>
-	<form th:action="@{/scribbly/blog}" method="post" enctype="multipart/form-data" th:object="${userDTO}" name="frm">
+	<form th:action="@{/scribbly/signup}" method="post" enctype="multipart/form-data" th:object="${userDTO}" name="frm">
 	    <label>ID: <input type="text" th:field="*{username}" oninput="checkIdOK()" id="username"/></label><br/>
 	    <div id="idTag" style="font-size: 0.8em; margin-top: 5px; color: gray;">
 	    	<small style="color: gray;">*id는 닉네임으로 사용되며, 변경할 수 없습니다.</small>

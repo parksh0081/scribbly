@@ -28,45 +28,45 @@ public class BlogController {
 	private final BlogService blogService;
     private final PostService postService;
 
-    @GetMapping("/{userId}")
-    public String showUserBlog(@PathVariable String userId, Model model,
-    						   @RequestParam(defaultValue = "0") int page,
+    @GetMapping("/{username}")
+    public String showUserBlog(@PathVariable("username") String username, Model model,
+    						   @RequestParam(name = "page", defaultValue = "0") int page,
                                @AuthenticationPrincipal UsersPrincipal principal) {
         if (principal == null) return "redirect:/scribbly/login?error=true";
 
         // 로그인한 유저의 userId가 아니어도 접근할 수 있게 됨
-        Blog blog = blogService.getBlogOrThrow(userId);
+        Blog blog = blogService.getBlogOrThrow(username);
         model.addAttribute("blogTitle", blog.getBlogTitle());
         // post목록
-        List<Posts> posts = postService.getAllPostsByUser(userId);
+        List<Posts> posts = postService.getAllPostsByUser(username);
         model.addAttribute("posts", posts);
         // 유저정보
         Users user = principal.getUsers();
         model.addAttribute("user", user);
         // 페이징 처리된 포스트 목록
-        Page<Posts> postPage = postService.getPagedPostsByUser(userId, page);
+        Page<Posts> postPage = postService.getPagedPostsByUser(username, page);
         model.addAttribute("postPage", postPage);
         return "blog/blog";
     }
 
 
 	// 글 목록 fragment (Ajax로 부분 로딩용)
-    @GetMapping("/{userId}/postsFragment")
-    public String postListFragment(@PathVariable String userId, Model model) {
-        List<Posts> posts = postService.getAllPostsByUser(userId);
+    @GetMapping("/{username}/postsFragment")
+    public String postListFragment(@PathVariable("username") String username, Model model) {
+        List<Posts> posts = postService.getAllPostsByUser(username);
         model.addAttribute("posts", posts);
         return "blog/postList :: postListFragment"; // Thymeleaf fragment 명시
     }
 
     // 글쓰기 폼 fragment (Ajax용)
-    @GetMapping("/{userId}/writeFragment")
-    public String writeFormFragment(@PathVariable String userId, Model model) {
-        model.addAttribute("userId", userId);
+    @GetMapping("/{username}/writeFragment")
+    public String writeFormFragment(@PathVariable("username") String username, Model model) {
+        model.addAttribute("username", username);
         return "blog/postWrite :: postWriteFragment"; // fragment 지정
     }
     
     // 글 상세보기
-    @GetMapping("/{userId}/postFragment/{postId}")
+    @GetMapping("/{username}/postFragment/{postId}")
     public String showPostDetail(@PathVariable Long postId, Model model) {
         postService.increaseViewCount(postId);
         Posts post = postService.getPostById(postId)

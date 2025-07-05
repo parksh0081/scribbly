@@ -13,7 +13,7 @@
 
     <!-- 나중에 수정/삭제 버튼도 여기에 -->
     <div th:if="${#authentication.name == post.user.userId}">
-        <a th:href="">수정</a> |
+        <a th:href="#">수정</a> |
         <a th:href="" onclick="return confirm('정말 삭제할까요?')">삭제</a>
     </div>
 </div>

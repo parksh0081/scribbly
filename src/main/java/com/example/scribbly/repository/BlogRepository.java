@@ -13,5 +13,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     Optional<Blog> findByUser(Users user);
 
     // UserId 기준으로 블로그 찾기 (optional)
-    Optional<Blog> findByUser_UserId(String userId);
+    Optional<Blog> findByUser_Username(String username);
 }

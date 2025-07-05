@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1 th:text="${blogTitle}">블로그 타이틀</h1>
-    <p th:text="'작성자: ' + ${user.nickname}">작성자</p>
+    <p th:text="'작성자: ' + ${user.username}">작성자</p>
 
     <button id="showListBtn">글 목록</button>
     <button id="showWriteBtn">글 쓰기</button>
@@ -32,19 +32,19 @@
 	    <tfoot>
 	    	<tr colspan="3">
 			<!-- 페이징 -->
-			<div style="margin-top: 1rem;">
+			<td style="margin-top: 1rem;">
 			    <button th:if="${!postPage.first}"
-			            th:href="@{/scribbly/{userId}(userId=${user.user_id}, page=${postPage.number - 1})}">
+			            th:href="@{/scribbly/{username(username=${user.username}, page=${postPage.number - 1})}">
 			        이전
 			    </button>
 			
 			    <span th:text="${postPage.number + 1} + ' / ' + ${postPage.totalPages}">1 / 1</span>
 			
 			    <button th:if="${!postPage.last}"
-			            th:href="@{/scribbly/{userId}(userId=${user.user_id}, page=${postPage.number + 1})}">
+			            th:href="@{/scribbly/{username}(username=${user.username}, page=${postPage.number + 1})}">
 			        다음
 			    </button>
-			</div>
+			</td>
 			</tr>
 	    </tfoot>
 	</table>
@@ -52,20 +52,20 @@
 
 		
     <div id="contentArea">
-        <!-- 초기에는 글 목록을 기본으로 보여줌 -->
+        <!-- 초기에는 글 전체를 기본으로 보여줌 -->
         <div th:replace="blog/postList :: postListFragment"></div>
     </div>
 
     <script>
         $(document).ready(function() {
-            const userId = /*[[${user.user_id}]]*/ 'default';
+            const username = /*[[${user.username}]]*/ 'default';
 
             $('#showListBtn').click(function() {
-                $('#contentArea').load(`/scribbly/${userId}/postsFragment`);
+                $('#contentArea').load(`/scribbly/${username}/postsFragment`);
             });
 
             $('#showWriteBtn').click(function() {
-                $('#contentArea').load(`/scribbly/${userId}/writeFragment`);
+                $('#contentArea').load(`/scribbly/${username}/writeFragment`);
             });
         });
     </script>

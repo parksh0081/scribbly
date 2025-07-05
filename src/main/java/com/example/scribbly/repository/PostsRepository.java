@@ -15,7 +15,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 	// 특정 블로그 글 리스트 조회 (optional)
     List<Posts> findByBlog_BlogId(Long blogId);
     // 리스트 페이징
-    Page<Posts> findByUser_UserId(String userId, Pageable pageable);
+    Page<Posts> findByBlog_User_Username(String username, Pageable pageable);
     //
     @Modifying
     @Query("UPDATE Posts p SET p.viewCount = p.viewCount + 1 WHERE p.postId = :postId")

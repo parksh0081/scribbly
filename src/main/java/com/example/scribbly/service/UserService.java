@@ -40,7 +40,7 @@ public class UserService {
     public void register(UserDTO userDTO) {
     	// 1. 계정 생성
         Users user = Users.builder()
-                .user_id(generateUserId())  // UUID 또는 커스텀 ID 생성 메서드
+                .userId(generateUserId())  // UUID 또는 커스텀 ID 생성 메서드
                 .username(userDTO.getUsername())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
@@ -50,7 +50,7 @@ public class UserService {
                 .created_at(new Date())
                 .build();
 
-        usersRepository.save(user);
+        user = usersRepository.save(user);
         
         // 2. 블로그 생성
         Blog blog = Blog.builder()

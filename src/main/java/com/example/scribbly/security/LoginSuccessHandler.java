@@ -33,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		usersRepository.save(user);  // 갱신
 		
 		// 로그인 성공 후 리디렉션
-		response.sendRedirect("/scribbly/blog");
+		response.sendRedirect("/scribbly/" + user.getUsername());
 	}
 
 }

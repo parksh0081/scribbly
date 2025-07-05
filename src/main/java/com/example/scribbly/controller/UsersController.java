@@ -73,7 +73,7 @@ public class UsersController {
     	//회원가입
         userService.register(userDTO);
         
-        return "/users/signupForm";  
+        return "redirect:/scribbly/login";  
     }
     
     // 로그인 폼 (Spring Security가 로그인 처리 담당)

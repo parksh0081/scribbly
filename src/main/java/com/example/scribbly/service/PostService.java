@@ -28,8 +28,8 @@ public class PostService {
     private final PostImageRepository postImageRepository;
 
     @Transactional
-    public Posts createPost(PostDTO postDTO, List<String> imageUrls, String userId) {
-        Blog blog = blogRepository.findByUser_UserId(userId)
+    public Posts createPost(PostDTO postDTO, List<String> imageUrls, String username) {
+        Blog blog = blogRepository.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("블로그 없음"));
 
         Posts post = postDTO.toEntity(blog);
@@ -49,18 +49,18 @@ public class PostService {
         return savedPost;
     }
 
-    public List<Posts> getAllPostsByUser(String userId) {
+    public List<Posts> getAllPostsByUser(String username) {
         return postRepository.findByBlog_BlogIdAndIsDeleted(
-                blogRepository.findByUser_UserId(userId)
+                blogRepository.findByUser_Username(username)
                         .orElseThrow(() -> new RuntimeException("블로그 없음"))
                         .getBlogId(), 
                         "N"
         );
     }
     
-    public Page<Posts> getPagedPostsByUser(String userId, int page) {
+    public Page<Posts> getPagedPostsByUser(String username, int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("createdAt").descending());
-        return postRepository.findByUser_UserId(userId, pageable);
+        return postRepository.findByBlog_User_Username(username, pageable);
     }
     
     public Optional<Posts> getPostById(Long postId) {
